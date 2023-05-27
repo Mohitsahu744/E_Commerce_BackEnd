@@ -6,13 +6,14 @@ require('./db/config')
 const User = require('./db/User')
 const Product = require('./db/Product')
 const app = express()
-const PORT = process.env.PORT || 6000
+const PORT = process.env.PORT || 4000
 app.use(express.json())
 app.use(cors());
 app.post('/register', async (req, resp) => {
     let user = new User(req.body);
     let result = await user.save()
     result = result.toObject();
+    
     delete result.password;
     jwt.sign({ result }, jwtkey, { expiresIn: "2h" }, (err, token) => {
         if (err) {
